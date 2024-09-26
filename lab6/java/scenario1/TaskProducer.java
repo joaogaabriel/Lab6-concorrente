@@ -1,3 +1,5 @@
+package java.scenario1;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,11 +16,19 @@ public class TaskProducer implements Runnable{
         this.productionTime = productionTime;
         this.producerId = new AtomicInteger(idCounter.incrementAndGet());
     }
-    
+
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'run'");
+        try{
+            while(true){
+                Task task = new Task(producerId.get());
+                taskQueue.put(task);
+                System.out.println("Produtor " + producerId + " produziu tarefa: " + task.getTaskId());
+                Thread.sleep(productionTime);
+            }
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
     }
-    
 }
